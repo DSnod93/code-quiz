@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: magenta;
+}
+
+nav h2 {
+    font-size: 20px;
+    font-weight: lighter;
+    margin-right: 20px;
+}
