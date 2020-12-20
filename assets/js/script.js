@@ -1,6 +1,8 @@
+
+
+
+
 // start timer when start button is clicked.....   79sec
-
-
 // show next question after completing the first 
 // if answered incorrectly subtract time from the clock
 // when timer hits 0 or all questions are answered THEN
@@ -8,55 +10,98 @@
 // when game is over user can save initials and score
 // store users initials and score
 
+
+
+// Questions for quiz with choices and correct answers
 var questions = [
     {
         question: 'Commonly used data types DO Not Include: ',
         choices: [
-            '1. strings',
-            '2. booleans',
-            '3. alerts',
-            '4. numbers'
+            'strings',
+            'booleans',
+            'alerts',
+            'numbers'
         ],
-        correct: '3. alerts'
+        correct: 'alerts'
     },
     {
         question: 'The condition in an if/else statement is enclosed with ',
         choices: [
-            '1. quotes',
-            '2. curly brackets',
-            '3. parenthesis',
-            '4. square brackets'
+            'quotes',
+            'curly brackets',
+            'parenthesis',
+            'square brackets'
         ],
-        correct: '3. parenthesis'
+        correct: 'parenthesis'
     },
     {
         question: 'Arrays in Javascript can be used to store ',
         choices: [
-            '1. numbers and strings',
-            '2. other arrays',
-            '3. booleans',
-            '4. all of the above'
+            'numbers and strings',
+            'other arrays',
+            'booleans',
+            'all of the above'
         ],
-        correct: '4. all of the above'
+        correct: 'all of the above'
     },
     {
-        question: 'String values must be enclosed within    when being assigned to variables. ',
+        question: 'String values must be enclosed within _____   when being assigned to variables. ',
         choices: [
-            '1. commas',
-            '2. curly brackets',
-            '3. quotes',
-            '4. parenthesis'
+            'commas',
+            'curly brackets',
+            'quotes',
+            'parenthesis'
         ],
-        correct: '3. quotes',
+        correct: 'quotes',
     },
     {
         question: 'A very useful tool used during development and debugging for printing content to the debugger is ',
         choices: [
-            '1. JavaScript',
-            '2. terminal/bash',
-            '3. for loops',
-            '4. console.log'
+            'JavaScript',
+            'terminal/bash',
+            'for loops',
+            'console.log'
         ],
-        correct: '4. console.log'
+        correct: 'console.log'
     }
 ];
+
+
+var score = 0;
+var timeLeft = 0;
+var timer;
+
+// start countdown 
+function startQuiz() {
+
+    timeLeft = 79;
+    document.getElementById("timeLeft").innerHTML = timeLeft;
+
+    timer = setInterval(function() {
+        timeLeft--;
+        document.getElementById("timeLeft")
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            endQuiz();
+        }
+    }, 1000);
+}
+
+
+
+
+// countdown ends
+function endQuiz() {
+    clearInterval(timer);
+
+    var content = `
+    <h2>All done!</h2>
+    <p>Your final score is </p>
+    <label for="initials">Enter initials:</label>
+    <input type="text" id="name" placeholder="First and Last initial">
+    `
+    document.getElementById("quizMain").innerHTML = content;
+}
+
+//
