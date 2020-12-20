@@ -70,6 +70,7 @@ var questions = [
 var score = 0;
 var timeLeft = 0;
 var timer;
+var currentQuestion = 0;
 
 // start countdown 
 function startQuiz() {
@@ -86,6 +87,8 @@ function startQuiz() {
             endQuiz();
         }
     }, 1000);
+    
+    nextQuestion();
 }
 
 
@@ -104,4 +107,28 @@ function endQuiz() {
     document.getElementById("quizMain").innerHTML = content;
 }
 
-//
+// loop through questions
+
+function nextQuestion() {
+    currentQuestion++;
+
+    if (currentQuestion > questions.length - 1) {
+        endQuiz();
+        return;
+    }
+
+    var content = "<h2>" + questions[currentQuestion].question + "</h2>"
+
+    for (var radioLoop = 0; radioLoop < questions[currentQuestion].choices.length; radioLoop++) {
+        var radioCode = "<button onclick=\"[CORRECT]\">[CHOICE]</button>";
+        radioCode = radioCode.replace("[CHOICE", questions[currentQuestion].choices[radioLoop]);
+        if (questions[currentQuestion].choices[radioLoop] == questions[currentQuestion].correct) {
+            radioCode = radioCode.replace(["CORRECT"], "correct()");
+        }
+        else {
+            radioCode= radioCode.replace(["CHOICE"], "incorrect()");
+        }
+        content += radioCode
+    }
+    document.getElementById("quizMain").innerHTML = content;
+}
