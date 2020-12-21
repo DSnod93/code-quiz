@@ -80,14 +80,14 @@ function startQuiz() {
 
     timer = setInterval(function() {
         timeLeft--;
-        document.getElementById("timeLeft")
+        document.getElementById("timeLeft").innerHTML = timeLeft;
 
         if (timeLeft <= 0) {
             clearInterval(timer);
             endQuiz();
         }
     }, 1000);
-    
+
     nextQuestion();
 }
 
@@ -103,9 +103,14 @@ function endQuiz() {
     <p>Your final score is </p>
     <label for="initials">Enter initials:</label>
     <input type="text" id="name" placeholder="First and Last initial">
+    <button onclick="setScore()">Set score</button>
     `
     document.getElementById("quizMain").innerHTML = content;
 }
+
+
+
+
 
 // loop through questions
 
@@ -121,14 +126,92 @@ function nextQuestion() {
 
     for (var radioLoop = 0; radioLoop < questions[currentQuestion].choices.length; radioLoop++) {
         var radioCode = "<button onclick=\"[CORRECT]\">[CHOICE]</button>";
-        radioCode = radioCode.replace("[CHOICE", questions[currentQuestion].choices[radioLoop]);
+        radioCode = radioCode.replace("[CHOICE]", questions[currentQuestion].choices[radioLoop]);
         if (questions[currentQuestion].choices[radioLoop] == questions[currentQuestion].correct) {
-            radioCode = radioCode.replace(["CORRECT"], "correct()");
+            radioCode = radioCode.replace("[CORRECT]", "correct()");
         }
         else {
-            radioCode= radioCode.replace(["CHOICE"], "incorrect()");
+            radioCode= radioCode.replace("[CORRECT]", "incorrect()");
         }
         content += radioCode
     }
+    document.getElementById("quizMain").innerHTML = content;
+}
+
+
+
+
+
+// if user choose wrong answer subtract 20secs from clock
+function incorrect() {
+    timeLeft -=20;
+    nextQuestion();
+}
+
+
+
+// if user chooses right answer THEN increase score by 20pts
+function correct() {
+    score +=20
+    nextQuestion();
+}
+
+
+// store the score on local storage
+function setScore() {
+    localStorage.setItem("highscore", score);
+    localStorage.setItem("highscoreName", document.getElementById('name').value);
+    getScore();
+}
+
+
+
+// retrieve score from local storage
+function getScore() {
+var content = `
+<h2>` + localStorage.getItem("highscoreName") + `'s highscore is:</h2>
+    <h1>` + localStorage.getItem("highscore") + `</h1><br> 
+    
+    <button onclick="clearScore()">Clear score!</button><button onclick="resetGame()">Play Again!</button>
+    
+    `;
+
+    document.getElementById("quizMain").innerHTML = content;
+}
+
+
+
+
+// clear score and name value in the local storage if user selects 'clear score'
+function clearScore() {
+    localStorage.setItem("highscore", "");
+    localStorage.setItem("highscoreName", "");
+
+    resetQuiz();
+}
+
+
+
+
+
+
+// reset the quiz 
+function resetQuiz() {
+    clearInterval(timer);
+    score = 0;
+    currentQuestion = 0;
+    timeLeft = 0;
+    timer = null;
+
+    document.getElementById("timeLeft").innerHTML = timeLeft;
+
+    var content = `
+    <h1>Coding Quiz Challenge</h1>
+    <p>
+    Try to answer the following code-related questions within the time limit. Keep in mind that incorrect
+    answers will penalize your score/time by ten seconds!
+    </p>
+    <button onclick="startQuiz()">Start</button>`;
+
     document.getElementById("quizMain").innerHTML = content;
 }
